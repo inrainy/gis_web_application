@@ -5,6 +5,6 @@ from django.shortcuts import render
 
 
 def hello_world(request):
-    return render(request, 'base.html')
+    return render(request, 'accountapp/hello_world.html')
     #대소문자 틀리면 안됨 HttpResponse
     #http에서 alt + enter누르면 뭐가 뜸
