@@ -14,11 +14,13 @@ def hello_world(request):
         model_instance.text = temp
         model_instance.save()
 
+        data_list = NewModel.objects.all()
+
         return render(request, 'accountapp/hello_world.html',
-                      context={'model_instance':model_instance})
+                      context={'data_list':data_list})
 
     else:
         return render(request, 'accountapp/hello_world.html',
-                      context={'text':'GET METHOD!'})
+                      context={'data_list':data_list})
     #대소문자 틀리면 안됨 HttpResponse
     #http에서 alt + enter누르면 뭐가 뜸
