@@ -14,3 +14,8 @@
 .우리_엄마_아들과_둘째_누나_footer_logo{
     margin: 1.5rem 0; font-family: 'Gaegu', cursive;"
 }
+
+.mw-500 {
+    max-width: 500px;
+    padding: 1rem 1.5rem;
+}
