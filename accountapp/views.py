@@ -12,22 +12,26 @@ from accountapp.models import NewModel
 
 
 def hello_world(request):
-    if request.method == "POST":
+    if request.user.is_authenticated:
+        if request.method == "POST":
 
-        temp = request.POST.get('input_text')
+            temp = request.POST.get('input_text')
 
-        model_instance = NewModel()
-        model_instance.text = temp
-        model_instance.save()
+            model_instance = NewModel()
+            model_instance.text = temp
+            model_instance.save()
 
-        return HttpResponseRedirect(reverse('accountapp:hello_world'))
+            return HttpResponseRedirect(reverse('accountapp:hello_world'))
+
+        else:
+            data_list = NewModel.objects.all()
+            return render(request, 'accountapp/hello_world.html',
+                          context={'data_list':data_list})
+        #대소문자 틀리면 안됨 HttpResponse
+        #http에서 alt + enter누르면 뭐가 뜸
 
     else:
-        data_list = NewModel.objects.all()
-        return render(request, 'accountapp/hello_world.html',
-                      context={'data_list':data_list})
-    #대소문자 틀리면 안됨 HttpResponse
-    #http에서 alt + enter누르면 뭐가 뜸
+        return HttpResponseRedirect(reverse('accountapp:login'))
 
 
 
@@ -49,8 +53,32 @@ class AccountUpdateView(UpdateView):
     success_url = reverse_lazy('accountapp:hello_world')
     template_name = 'accountapp/update.html'
 
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return super().get(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(reverse('accountapp:login'))
+
+    def post(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return super().post(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(reverse('accountapp:login'))
+
 class AccountDeleteView(DeleteView):
     model = User
     context_object_name = 'target_user'
     success_url = reverse_lazy('accountapp:hello_world')
     template_name = 'accountapp/delete.html'
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return super().get(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(reverse('accountapp:login'))
+
+    def post(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return super().post(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(reverse('accountapp:login'))
